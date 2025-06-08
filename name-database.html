@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Database - Holly Game Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="name-database.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5 animate__animated animate__fadeIn">Name Database</h1>
+        <div class="card animate__animated animate__fadeInUp">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="genderFilter" class="mb-2">Filter by Gender</label>
+                            <select class="form-control" id="genderFilter">
+                                <option value="all">All</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="searchInput" class="mb-2">Search Names</label>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Type to search...">
+                        </div>
+                    </div>
+                </div>
+                <div class="name-list" id="nameList">
+                    <!-- Names will be populated here -->
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="index.html" class="btn btn-primary">
+                <i class="bi bi-house-door"></i> Back to Home
+            </a>
+        </div>
+    </div>
+    <script src="name-meanings.js"></script>
+    <script src="name-database.js"></script>
+</body>
+</html>
