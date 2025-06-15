@@ -22,7 +22,7 @@
 }
 
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('1.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('back.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -34,7 +34,7 @@ body {
 h1, h2 {
     font-family: 'Cinzel', serif;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(58, 90, 64, 0.8);
-    color: #f0f8ff;
+    color: #ffffff;
     font-weight: 700;
 }
 

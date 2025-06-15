@@ -40,6 +40,81 @@ h1 {
     overflow-y: auto;
 }
 
+.letter-filter {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    padding: 1rem 0;
+    z-index: 1000;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.letter-filter button {
+    min-width: 40px;
+    margin: 0.25rem;
+}
+
+.letter-filter button.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.letter-heading {
+    font-size: 2rem;
+    color: #0d6efd;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.letter-heading.active {
+    color: #0a58ca;
+    border-bottom-color: #0a58ca;
+}
+
+.name-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    height: 100%;
+    background-color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.name-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.name-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.meaning {
+    margin-bottom: 0.75rem;
+    color: #495057;
+}
+
+.description {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+}
+
 .name-item {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 8px;
@@ -93,6 +168,39 @@ h1 {
 
 .btn-primary {
     background: #3a5a40;
+    border-color: #3a5a40;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #344e41;
+    border-color: #344e41;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
     border-color: #3a5a40;
     padding: 0.75rem 2rem;
     transition: all 0.3s ease;

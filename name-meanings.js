@@ -1,16 +1,74 @@
-const nameMeanings = {
+window.nameMeanings = {
     // Male names
     "Matthew": {
         meaning: "Gift of God",
+        gender: "Male",
         description: "A biblical name derived from Hebrew, meaning 'gift of Yahweh'. Matthew was one of the twelve apostles and the author of the first Gospel in the New Testament."
     },
     "John": {
         meaning: "God is gracious",
+        gender: "Male",
         description: "Of Hebrew origin, John was the name of several important biblical figures, including John the Baptist and the apostle John."
     },
     "Peter": {
         meaning: "Rock",
+        gender: "Male",
         description: "Derived from the Greek word 'petros' meaning rock. Jesus gave Simon this name, saying he would be the rock upon which the Church would be built."
+    },
+    "Paul": {
+        meaning: "Small, humble",
+        gender: "Male",
+        description: "Originally the Roman name Paulus. Saint Paul was one of the most important early Christian leaders and authored many New Testament epistles."
+    },
+    "James": {
+        meaning: "Supplanter",
+        gender: "Male",
+        description: "English form of Jacob. Two of Jesus's apostles bore this name, including James the brother of John."
+    },
+    "Andrew": {
+        meaning: "Strong, manly",
+        gender: "Male",
+        description: "Of Greek origin, meaning 'manly'. Saint Andrew was one of the twelve apostles and is the patron saint of Scotland."
+    },
+    "Thomas": {
+        meaning: "Twin",
+        gender: "Male",
+        description: "Aramaic origin meaning 'twin'. The apostle Thomas was known for his initial doubt about Jesus's resurrection."
+    },
+    "Philip": {
+        meaning: "Lover of horses",
+        gender: "Male",
+        description: "Greek origin. The apostle Philip was one of the first disciples called by Jesus."
+    },
+    "Bartholomew": {
+        meaning: "Son of Talmai",
+        gender: "Male",
+        description: "Hebrew origin. One of the twelve apostles, also known as Nathanael in John's Gospel."
+    },
+    "Simon": {
+        meaning: "He has heard",
+        gender: "Male",
+        description: "Hebrew origin. Several biblical figures bore this name, including Simon Peter and Simon the Zealot."
+    },
+    "David": {
+        meaning: "Beloved",
+        gender: "Male",
+        description: "Hebrew origin. King David was the second king of Israel and wrote many of the Psalms."
+    },
+    "Solomon": {
+        meaning: "Peace",
+        gender: "Male",
+        description: "Hebrew origin. King Solomon, son of David, was known for his wisdom and wrote several books of the Bible."
+    },
+    "Daniel": {
+        meaning: "God is my judge",
+        gender: "Male",
+        description: "Hebrew origin. The prophet Daniel showed great faith and wisdom in the Babylonian court."
+    },
+    "Joseph": {
+        meaning: "He will add",
+        gender: "Male",
+        description: "Hebrew origin. Notable biblical Josephs include Jacob's son and Jesus's earthly father."
     },
     "Paul": {
         meaning: "Small, humble",

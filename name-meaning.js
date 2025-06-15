@@ -8,6 +8,12 @@ const nameHistory = document.getElementById('nameHistory');
 const clearHistoryBtn = document.getElementById('clearHistory');
 const downloadHistoryBtn = document.getElementById('downloadHistory');
 
+// Share buttons
+const shareWhatsapp = document.getElementById('shareWhatsapp');
+const shareFacebook = document.getElementById('shareFacebook');
+const shareTwitter = document.getElementById('shareTwitter');
+const shareEmail = document.getElementById('shareEmail');
+
 // Initialize history from localStorage
 let history = JSON.parse(localStorage.getItem('nameMeaningHistory') || '[]');
 
@@ -17,6 +23,8 @@ let currentResult = '';
 // Sound effects
 const searchSound = new Audio('https://github.com/lucky-martino/Holly-Game/raw/main/sounds/generate.mp3');
 const copySound = new Audio('https://github.com/lucky-martino/Holly-Game/raw/main/sounds/copy.mp3');
+
+
 
 // History functions
 function updateHistory(name, meaning, description) {
@@ -108,8 +116,13 @@ function searchName() {
     // Convert first letter to uppercase and rest to lowercase
     const formattedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     
-    // Get meaning from database
+    // Get meaning from main database first
     const meaning = nameMeanings[formattedName];
+    console.log('Main database result:', meaning);
+
+    // If not found in main database, check CSV database
+    const csvMeaning = !meaning && csvNames ? csvNames[formattedName] : null;
+    console.log('CSV database result:', csvMeaning);
 
     // Show result box
     resultBox.style.display = 'block';
@@ -122,19 +135,20 @@ function searchName() {
     // Clear previous animations
     resultBox.classList.remove('animate__animated', 'animate__fadeIn');
     
-    if (meaning) {
+    if (meaning || csvMeaning) {
+        const result = meaning || csvMeaning;
         nameTitle.textContent = formattedName;
-        meaningText.textContent = meaning.meaning;
-        descriptionText.textContent = meaning.description || 'No detailed description available.';
+        meaningText.textContent = result.meaning;
+        descriptionText.textContent = result.description || 'No detailed description available.';
         
         // Update current result for copy function
-        currentResult = `Name: ${formattedName}\nMeaning: ${meaning.meaning}\nDescription: ${meaning.description || 'No detailed description available'}`;
+        currentResult = `Name: ${formattedName}\nMeaning: ${result.meaning}\nDescription: ${result.description || 'No detailed description available'}`;
         
         // Add to history
-        updateHistory(formattedName, meaning.meaning, meaning.description);
+        updateHistory(formattedName, result.meaning, result.description);
         
         // If no description, add Google search link
-        if (!meaning.description) {
+        if (!result.description) {
             const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(formattedName + ' name meaning christian biblical')}`;
             descriptionText.innerHTML = `
                 Description not available. 
@@ -157,6 +171,34 @@ function searchName() {
     resultBox.classList.add('animate__animated', 'animate__fadeIn');
 }
 
+// Share functions
+function shareResult(platform) {
+    const name = resultBox.querySelector('.name-title').textContent;
+    const meaning = resultBox.querySelector('.meaning').textContent;
+    const description = resultBox.querySelector('.description').textContent;
+    const text = `Name: ${name}\nMeaning: ${meaning}\n${description}`;
+    const encodedText = encodeURIComponent(text);
+    
+    let url = '';
+    switch(platform) {
+        case 'whatsapp':
+            url = `https://wa.me/?text=${encodedText}`;
+            break;
+        case 'facebook':
+            url = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${encodedText}`;
+            break;
+        case 'twitter':
+            url = `https://twitter.com/intent/tweet?text=${encodedText}`;
+            break;
+        case 'email':
+            url = `mailto:?subject=Name Meaning: ${name}&body=${encodedText}`;
+            break;
+    }
+    
+    // Open in new window
+    window.open(url, '_blank');
+}
+
 // Event listeners
 searchBtn.addEventListener('click', searchName);
 nameInput.addEventListener('keypress', (e) => {
@@ -167,6 +209,12 @@ nameInput.addEventListener('keypress', (e) => {
 copyBtn.addEventListener('click', copyResult);
 clearHistoryBtn.addEventListener('click', clearHistory);
 downloadHistoryBtn.addEventListener('click', downloadHistory);
+
+// Share button event listeners
+shareWhatsapp.addEventListener('click', () => shareResult('whatsapp'));
+shareFacebook.addEventListener('click', () => shareResult('facebook'));
+shareTwitter.addEventListener('click', () => shareResult('twitter'));
+shareEmail.addEventListener('click', () => shareResult('email'));
 
 // Display initial history
 displayHistory();

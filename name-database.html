@@ -9,42 +9,241 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" href="name-database.css">
+    <script src="name-meanings.js"></script>
+    <script src="csv-names.js"></script>
 </head>
 <body>
     <div class="container py-5">
-        <h1 class="text-center mb-5 animate__animated animate__fadeIn">Name Database</h1>
-        <div class="card animate__animated animate__fadeInUp">
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="genderFilter" class="mb-2">Filter by Gender</label>
-                            <select class="form-control" id="genderFilter">
-                                <option value="all">All</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="searchInput" class="mb-2">Search Names</label>
-                            <input type="text" class="form-control" id="searchInput" placeholder="Type to search...">
-                        </div>
-                    </div>
-                </div>
-                <div class="name-list" id="nameList">
-                    <!-- Names will be populated here -->
+        <h1 class="text-center mb-4 animate__animated animate__fadeIn">Name Database</h1>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="genderFilter" class="mb-2">Filter by Gender</label>
+                    <select id="genderFilter" class="form-select">
+                        <option value="all">All Genders</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="unisex">Unisex</option>
+                    </select>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-4">
-            <a href="index.html" class="btn btn-primary">
-                <i class="bi bi-house-door"></i> Back to Home
-            </a>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="letter-filter d-flex flex-wrap justify-content-center gap-1 mb-4">
+                    <button class="btn btn-outline-primary active" data-letter="all">All</button>
+                    <button class="btn btn-outline-primary" data-letter="a">A</button>
+                    <button class="btn btn-outline-primary" data-letter="b">B</button>
+                    <button class="btn btn-outline-primary" data-letter="c">C</button>
+                    <button class="btn btn-outline-primary" data-letter="d">D</button>
+                    <button class="btn btn-outline-primary" data-letter="e">E</button>
+                    <button class="btn btn-outline-primary" data-letter="f">F</button>
+                    <button class="btn btn-outline-primary" data-letter="g">G</button>
+                    <button class="btn btn-outline-primary" data-letter="h">H</button>
+                    <button class="btn btn-outline-primary" data-letter="i">I</button>
+                    <button class="btn btn-outline-primary" data-letter="j">J</button>
+                    <button class="btn btn-outline-primary" data-letter="k">K</button>
+                    <button class="btn btn-outline-primary" data-letter="l">L</button>
+                    <button class="btn btn-outline-primary" data-letter="m">M</button>
+                    <button class="btn btn-outline-primary" data-letter="n">N</button>
+                    <button class="btn btn-outline-primary" data-letter="o">O</button>
+                    <button class="btn btn-outline-primary" data-letter="p">P</button>
+                    <button class="btn btn-outline-primary" data-letter="q">Q</button>
+                    <button class="btn btn-outline-primary" data-letter="r">R</button>
+                    <button class="btn btn-outline-primary" data-letter="s">S</button>
+                    <button class="btn btn-outline-primary" data-letter="t">T</button>
+                    <button class="btn btn-outline-primary" data-letter="u">U</button>
+                    <button class="btn btn-outline-primary" data-letter="v">V</button>
+                    <button class="btn btn-outline-primary" data-letter="w">W</button>
+                    <button class="btn btn-outline-primary" data-letter="x">X</button>
+                    <button class="btn btn-outline-primary" data-letter="y">Y</button>
+                    <button class="btn btn-outline-primary" data-letter="z">Z</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-12">
+                <div id="nameList" class="name-list"></div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <p>Total Names: <span id="totalNames">0</span></p>
+                <a href="index.html" class="btn btn-primary">
+                    <i class="bi bi-house-door"></i> Back to Home
+                </a>
+            </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="name-meanings.js"></script>
-    <script src="name-database.js"></script>
+    <script src="csv-names.js"></script>
+    <script>
+    // Wait for all scripts to load
+    window.addEventListener('load', () => {
+        // Get DOM elements
+        const nameList = document.getElementById('nameList');
+        const genderFilter = document.getElementById('genderFilter');
+        const totalNames = document.getElementById('totalNames');
+        const letterButtons = document.querySelectorAll('.letter-filter button');
+
+        // Current filter state
+        let currentLetter = 'all';
+
+        // Function to display names with current filters
+        function displayNames() {
+            // Wait for data to be available
+            if (!window.nameMeanings || !window.csvNames) {
+                nameList.innerHTML = '<div class="alert alert-danger">Error: Name data not loaded properly</div>';
+                return;
+            }
+
+            // Combine names from both sources
+            const allNames = [];
+
+            // Add names from primary database
+            for (const [name, data] of Object.entries(window.nameMeanings)) {
+                allNames.push({
+                    name: name,
+                    meaning: data.meaning,
+                    description: data.description,
+                    gender: data.gender || 'Unisex'
+                });
+            }
+
+            // Add names from CSV database
+            for (const [name, data] of Object.entries(window.csvNames)) {
+                if (!window.nameMeanings[name]) {
+                    allNames.push({
+                        name: name,
+                        meaning: data.meaning,
+                        description: data.description,
+                        gender: data.gender || 'Unisex',
+                        fromCsv: true
+                    });
+                }
+            }
+
+            // Apply filters
+            let filteredNames = [...allNames];
+            const selectedGender = genderFilter.value.toLowerCase();
+
+            // Apply gender filter
+            if (selectedGender !== 'all') {
+                filteredNames = filteredNames.filter(nameData => {
+                    return nameData.gender.toLowerCase() === selectedGender;
+                });
+            }
+
+            // Apply letter filter
+            if (currentLetter !== 'all') {
+                filteredNames = filteredNames.filter(nameData => {
+                    return nameData.name.toLowerCase().startsWith(currentLetter.toLowerCase());
+                });
+            }
+
+            // Sort names alphabetically
+            filteredNames.sort((a, b) => a.name.localeCompare(b.name));
+
+            // Update total count
+            totalNames.textContent = filteredNames.length;
+
+            // Generate HTML
+            let html = '';
+            filteredNames.forEach(nameData => {
+                // Add name card
+                html += `
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="name-card">
+                            <h3 class="name-title">${nameData.name}</h3>
+                            <p class="meaning"><strong>Meaning:</strong> ${nameData.meaning}</p>
+                            ${nameData.description ? `<p class="description">${nameData.description}</p>` : ''}
+                            <div class="tags mb-2">
+                                <span class="badge bg-secondary">${nameData.gender}</span>
+                                ${nameData.fromCsv ? '<span class="badge bg-info">From Dataset</span>' : ''}
+                            </div>
+                            <div class="btn-group w-100">
+                                <button class="btn btn-sm btn-outline-primary copy-btn" data-name="${nameData.name}" data-meaning="${nameData.meaning}">
+                                    <i class="bi bi-clipboard"></i> Copy
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary share-btn" data-name="${nameData.name}" data-meaning="${nameData.meaning}">
+                                    <i class="bi bi-share"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            nameList.innerHTML = html || '<div class="col-12"><div class="alert alert-info">No names found matching the current filters.</div></div>';
+        }
+
+        // Set up event listeners
+        genderFilter.addEventListener('change', displayNames);
+
+        letterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                letterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentLetter = button.getAttribute('data-letter');
+                displayNames();
+            });
+        });
+
+        // Handle copy button clicks
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.copy-btn')) {
+                const btn = e.target.closest('.copy-btn');
+                const name = btn.dataset.name;
+                const meaning = btn.dataset.meaning;
+                const text = `${name} - ${meaning}`;
+                
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                });
+            }
+        });
+
+        // Handle share button clicks
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.share-btn')) {
+                const btn = e.target.closest('.share-btn');
+                const name = btn.dataset.name;
+                const meaning = btn.dataset.meaning;
+                const text = `Check out this name: ${name} - ${meaning}`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: name,
+                        text: text,
+                        url: window.location.href
+                    }).catch(console.error);
+                } else {
+                    navigator.clipboard.writeText(text).then(() => {
+                        const originalText = btn.innerHTML;
+                        btn.innerHTML = '<i class="bi bi-check"></i> Link Copied!';
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                        }, 2000);
+                    });
+                }
+            }
+        });
+
+        // Initial display
+        displayNames();
+    });
+    </script>
 </body>
 </html>
+
