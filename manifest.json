@@ -9,7 +9,7 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icons/icon-72x72.png",
+      "src": "icons/icons/android-launchericon-72-72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
